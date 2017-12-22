@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "spec-version": "1.0"
+  },
+  "display-name": "Data Profiler",
+  "configuration-groups": [
+    {
+      "label": "Profiler Configuration",
+      "properties": [
+        {
+          "widget-type": "textbox",
+          "label": "Num Partitions",
+          "name": "partitions",
+          "widget-attributes" : {
+            "placeholder" : "Specify number of partitions to be created. Default is number of fields to be profiled."
+          },
+          "plugin-function": {
+            "method": "POST",
+            "label": "Populate Schema",
+            "widget": "outputSchema",
+            "output-property": "schema",
+            "plugin-method": "getSchema",
+            "position": "bottom",
+            "multiple-inputs": true,
+            "button-class": "btn-hydrator"
+          }
+        }
+      ]
+    }
+  ],
+  "outputs": []
+}
