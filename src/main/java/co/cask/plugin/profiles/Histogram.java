@@ -1,3 +1,19 @@
+/*
+ * Copyright © 2018 Cask Data, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
 package co.cask.plugin.profiles;
 
 import co.cask.cdap.api.data.format.StructuredRecord;
@@ -20,7 +36,7 @@ public final class Histogram extends Profile {
   private DynamicHistogram histogram;
 
   private Schema histogramSchema = Schema.recordOf(
-    "histogram",
+    "histrec",
     Schema.Field.of("low", Schema.of(Schema.Type.DOUBLE)),
     Schema.Field.of("high", Schema.of(Schema.Type.DOUBLE)),
     Schema.Field.of("count", Schema.of(Schema.Type.DOUBLE))
@@ -43,18 +59,34 @@ public final class Histogram extends Profile {
 
   @Override
   public List<Schema.Field> fields() {
-    return Arrays.asList(
-      Schema.Field.of("histogram", Schema.nullableOf(Schema.arrayOf(histogramSchema)))
-    );
+    Schema.Field field = Schema.Field.of("hist", Schema.nullableOf(Schema.arrayOf(histogramSchema)));
+    return Arrays.asList(field);
   }
 
   @Override
   public void reset() {
+    histogram = new DynamicHistogram(10, 5, 10);
   }
 
   @Override
   public void update(Object value) {
-
+    if (value != null) {
+      double val = 0;
+      if (value instanceof Integer) {
+        val = Double.valueOf((Integer) value).doubleValue();
+      } else if (value instanceof Long) {
+        val = Double.valueOf((Long) value).doubleValue();
+      } else if (value instanceof Float) {
+        val = Double.valueOf((Float) value).doubleValue();
+      } else if (value instanceof Double) {
+        val = (Double) value;
+      } else if (value instanceof String) {
+        val = ((String) value).length();
+      } else {
+        return;
+      }
+      histogram.addDataPoint(val);
+    }
   }
 
   @Override
@@ -81,7 +113,7 @@ public final class Histogram extends Profile {
           LOG.error(e.getMessage());
         }
       }
-      builder.set("histogram", points);
+      builder.set("hist", points);
     }
   }
 }

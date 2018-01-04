@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 Cask Data, Inc.
+ * Copyright © 2018 Cask Data, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -28,8 +28,10 @@ import co.cask.cdap.etl.api.batch.BatchAggregator;
 import co.cask.cdap.etl.api.batch.BatchAggregatorContext;
 import co.cask.cdap.etl.api.batch.BatchRuntimeContext;
 import co.cask.plugin.profiles.Categorical;
+import co.cask.plugin.profiles.Histogram;
 import co.cask.plugin.profiles.Logical;
 import co.cask.plugin.profiles.Quantitative;
+import co.cask.plugin.profiles.Uniques;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -54,7 +56,9 @@ public class DataProfiler extends BatchAggregator<String, StructuredRecord, Stru
   private static final List<Profile> profiles = Arrays.asList(
     new Categorical(),
     new Logical(),
-    new Quantitative()
+    new Quantitative(),
+    new Uniques(),
+    new Histogram()
   );
 
   public DataProfiler(Conf conf) {

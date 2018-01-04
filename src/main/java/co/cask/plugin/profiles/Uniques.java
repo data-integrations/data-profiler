@@ -14,43 +14,54 @@
  * the License.
  */
 
-package co.cask.plugin;
+package co.cask.plugin.profiles;
 
 import co.cask.cdap.api.data.format.StructuredRecord;
 import co.cask.cdap.api.data.schema.Schema;
+import co.cask.plugin.Profile;
+import com.clearspring.analytics.stream.cardinality.HyperLogLog;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Class description here.
  */
-public class DefaultProfiler extends Profiler {
+public final class Uniques extends Profile {
+  private HyperLogLog hpp;
 
-  public DefaultProfiler(List<Profile> profiles, Schema schema) {
-    super(profiles, schema);
+  public Uniques() {
+    super("uniques");
   }
 
   @Override
-  public void update(String name, Object value) {
-    List<Profile> profiles = getProfiles(name);
-    for(Profile profile : profiles) {
-      profile.update(value);
+  public List<Schema.Type> types() {
+    return Arrays.asList(
+      Schema.Type.STRING
+    );
+  }
+
+  @Override
+  public List<Schema.Field> fields() {
+    return Arrays.asList(
+      Schema.Field.of("value", Schema.of(Schema.Type.LONG))
+    );
+  }
+
+  @Override
+  public void reset() {
+    hpp = new HyperLogLog(0.1f);
+  }
+
+  @Override
+  public void update(Object value) {
+    if (value instanceof String) {
+      hpp.offer(value);
     }
   }
 
   @Override
-  public StructuredRecord result(String name) {
-    StructuredRecord.Builder builder = StructuredRecord.builder(getOutputSchema());
-    builder.set("name", name);
-    for (Profile profile : getProfiles(name)) {
-      StructuredRecord record = profile.results(
-        Schema.recordOf(
-          profile.name(),
-          profile.fields()
-        )
-      );
-      builder.set(profile.name(), record);
-    }
-    return builder.build();
+  public void results(StructuredRecord.Builder builder) {
+    builder.set("value", hpp.cardinality());
   }
 }
