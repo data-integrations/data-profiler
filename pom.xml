@@ -20,7 +20,7 @@
 
   <groupId>co.cask.plugin</groupId>
   <artifactId>data-profiler</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
   <name>Data Profiler for generating statistics on the fields being processed of a feed.</name>
 
