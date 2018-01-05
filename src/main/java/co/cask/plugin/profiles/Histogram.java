@@ -18,34 +18,50 @@ package co.cask.plugin.profiles;
 
 import co.cask.cdap.api.data.format.StructuredRecord;
 import co.cask.cdap.api.data.schema.Schema;
-import co.cask.cdap.format.StructuredRecordStringConverter;
 import co.cask.plugin.Profile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * Class description here.
+ * This class <code>Historgram</code> profiler generates histogram for values of
+ * types -- integer, long, float, double and string. For string, the histogram is based
+ * on the length of the string.
+ *
+ * This class generates 10 buckets and the buckets are dynamically created as the values
+ * are being added to the profiler.
+ *
+ * The resulting record contains -- low, high and count for each bucket.
  */
 public final class Histogram extends Profile {
-  private static final Logger LOG = LoggerFactory.getLogger(Histogram.class);
+  private static final String LOW = "low";
+  private static final String HIGH = "high";
+  private static final String COUNT = "count";
+  private static final String RECORD = "hist";
+  private static final int NUMBER_OF_BUCKETS = 10;
+  private static final int INITIAL_DATAPOINTS_PER_BUCKET = 5;
+  private static final int HALF_LIFE = 10;
+
   private DynamicHistogram histogram;
 
-  private Schema histogramSchema = Schema.recordOf(
+  // Schema for each bucket.
+  private Schema schema = Schema.recordOf(
     "histrec",
-    Schema.Field.of("low", Schema.of(Schema.Type.DOUBLE)),
-    Schema.Field.of("high", Schema.of(Schema.Type.DOUBLE)),
-    Schema.Field.of("count", Schema.of(Schema.Type.DOUBLE))
+    Schema.Field.of(LOW, Schema.of(Schema.Type.DOUBLE)),
+    Schema.Field.of(HIGH, Schema.of(Schema.Type.DOUBLE)),
+    Schema.Field.of(COUNT, Schema.of(Schema.Type.DOUBLE))
   );
 
   public Histogram() {
     super("histogram");
   }
 
+  /**
+   * This profiler is responsible for handling INT, LONG, FLOAT, DOUBLE and STRING types.
+   *
+   * @return List of types supported by this profiler.
+   */
   @Override
   public List<Schema.Type> types() {
     return Arrays.asList(
@@ -57,21 +73,44 @@ public final class Histogram extends Profile {
     );
   }
 
+  /**
+   * Specifies the schema that this profiler would use to communicate the results of
+   * histogram.
+   *
+   * @return Schema associated with histogram results.
+   */
   @Override
   public List<Schema.Field> fields() {
-    Schema.Field field = Schema.Field.of("hist", Schema.nullableOf(Schema.arrayOf(histogramSchema)));
-    return Arrays.asList(field);
+    return Arrays.asList(
+      Schema.Field.of(
+        RECORD, Schema.nullableOf(
+          Schema.arrayOf(schema)
+        )
+      )
+    );
   }
 
+  /**
+   * Resets the internal states of histogram.
+   */
   @Override
   public void reset() {
-    histogram = new DynamicHistogram(10, 5, 10);
+    histogram = new DynamicHistogram(
+      NUMBER_OF_BUCKETS,
+      INITIAL_DATAPOINTS_PER_BUCKET,
+      HALF_LIFE
+    );
   }
 
+  /**
+   * Updates the internal states of histogram.
+   *
+   * @param value to be used to update histogram.
+   */
   @Override
   public void update(Object value) {
     if (value != null) {
-      double val = 0;
+      double val = 0.0;
       if (value instanceof Integer) {
         val = Double.valueOf((Integer) value).doubleValue();
       } else if (value instanceof Long) {
@@ -82,6 +121,8 @@ public final class Histogram extends Profile {
         val = (Double) value;
       } else if (value instanceof String) {
         val = ((String) value).length();
+      } else if (value instanceof Short) {
+        val = Double.valueOf((Short) value ).doubleValue();
       } else {
         return;
       }
@@ -89,6 +130,11 @@ public final class Histogram extends Profile {
     }
   }
 
+  /**
+   * Adds all the internal states of buckets into a <code>StructuredRecord</code>.
+   *
+   * @param builder to add the internal states of the record.
+   */
   @Override
   public void results(StructuredRecord.Builder builder) {
     DynamicHistogram.Bucket[] buckets = histogram.getHistogram();
@@ -96,24 +142,16 @@ public final class Histogram extends Profile {
       double high = 0;
       List<StructuredRecord> points = new ArrayList<>();
       for (int i = 0; i < buckets.length; ++i) {
-        double low = high;
         DynamicHistogram.Bucket bucket = buckets[i];
+        double low = high;
         high = bucket.getHigh();
-
-        StructuredRecord.Builder hist = StructuredRecord.builder(histogramSchema);
-        hist.set("low", low);
-        hist.set("high", high);
-        hist.set("count", bucket.getCount());
-        StructuredRecord point = hist.build();
-        points.add(point);
-        try {
-          String s = StructuredRecordStringConverter.toJsonString(point);
-          LOG.info("Structured Record {}", s);
-        } catch (IOException e) {
-          LOG.error(e.getMessage());
-        }
+        StructuredRecord.Builder hist = StructuredRecord.builder(schema);
+        hist.set(LOW, low);
+        hist.set(HIGH, high);
+        hist.set(COUNT, bucket.getCount());
+        points.add(hist.build());
       }
-      builder.set("hist", points);
+      builder.set(RECORD, points);
     }
   }
 }

@@ -62,8 +62,8 @@ public final class Categorical extends Profile {
   @Override
   public List<Schema.Field> fields() {
     return Arrays.asList(
-      Schema.Field.of("min", Schema.of(Schema.Type.LONG)),
-      Schema.Field.of("max", Schema.of(Schema.Type.LONG)),
+      Schema.Field.of("minimum", Schema.of(Schema.Type.LONG)),
+      Schema.Field.of("maximum", Schema.of(Schema.Type.LONG)),
       Schema.Field.of("empty", Schema.of(Schema.Type.LONG)),
       Schema.Field.of("mean", Schema.of(Schema.Type.DOUBLE)),
       Schema.Field.of("stdev", Schema.of(Schema.Type.DOUBLE)),

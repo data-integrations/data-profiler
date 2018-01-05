@@ -25,7 +25,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Class description here.
+ * This class <code>Uniques</code> profiler profiles String types using Hyper Log Log to determine
+ * the cardinality.
  */
 public final class Uniques extends Profile {
   private HyperLogLog hpp;

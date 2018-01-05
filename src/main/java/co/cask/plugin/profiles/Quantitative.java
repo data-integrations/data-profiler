@@ -20,20 +20,17 @@ import co.cask.cdap.api.data.format.StructuredRecord;
 import co.cask.cdap.api.data.schema.Schema;
 import co.cask.plugin.Profile;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * Class description here.
+ * This class <code>Quantitative</code> profiler profiles numbers to determine
+ * minimum, maximum, mean, total, standard devication, median, skewness, kurtosis,
+ * population variance, percentiles (80,95,99), geometric mean and quadratic mean.
  */
 public final class Quantitative extends Profile {
-  private static final Logger LOG = LoggerFactory.getLogger(Quantitative.class);
   private DescriptiveStatistics statistics;
-  private long count;
-  private long nulls;
 
   public Quantitative() {
     super("quantitative");
@@ -53,10 +50,10 @@ public final class Quantitative extends Profile {
   @Override
   public List<Schema.Field> fields() {
     return Arrays.asList(
-      Schema.Field.of("min", Schema.of(Schema.Type.DOUBLE)),
-      Schema.Field.of("max", Schema.of(Schema.Type.DOUBLE)),
+      Schema.Field.of("minimum", Schema.of(Schema.Type.DOUBLE)),
+      Schema.Field.of("maximum", Schema.of(Schema.Type.DOUBLE)),
       Schema.Field.of("mean", Schema.of(Schema.Type.DOUBLE)),
-      Schema.Field.of("sum", Schema.of(Schema.Type.DOUBLE)),
+      Schema.Field.of("total", Schema.of(Schema.Type.DOUBLE)),
       Schema.Field.of("stdev", Schema.of(Schema.Type.DOUBLE)),
       Schema.Field.of("median", Schema.of(Schema.Type.DOUBLE)),
       Schema.Field.of("skewness", Schema.of(Schema.Type.DOUBLE)),
@@ -73,8 +70,6 @@ public final class Quantitative extends Profile {
   @Override
   public void reset() {
     statistics.clear();
-    count = 0;
-    nulls = 0;
   }
 
   @Override

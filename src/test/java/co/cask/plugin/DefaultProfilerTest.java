@@ -21,7 +21,6 @@ import co.cask.cdap.api.data.schema.Schema;
 import co.cask.plugin.profiles.Categorical;
 import co.cask.plugin.profiles.DynamicHistogram;
 import co.cask.plugin.profiles.Histogram;
-import co.cask.plugin.profiles.Informational;
 import co.cask.plugin.profiles.Logical;
 import co.cask.plugin.profiles.Quantitative;
 import co.cask.plugin.profiles.Uniques;
@@ -50,7 +49,6 @@ public class DefaultProfilerTest {
   public void testBasicFunctionality() throws Exception {
     List<Profile> profiles = new ArrayList<>();
     profiles.add(new Categorical());
-    profiles.add(new Informational());
     profiles.add(new Histogram());
     profiles.add(new Logical());
     profiles.add(new Uniques());

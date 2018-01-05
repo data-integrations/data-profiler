@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Class description here.
+ * This class <code>Logical</code> profilers profiles boolean columns.
  */
 public final class Logical extends Profile {
   private long countTrue;
@@ -43,8 +43,8 @@ public final class Logical extends Profile {
   @Override
   public List<Schema.Field> fields() {
     return Arrays.asList(
-      Schema.Field.of("true", Schema.of(Schema.Type.LONG)),
-      Schema.Field.of("false", Schema.of(Schema.Type.LONG)),
+      Schema.Field.of("positive", Schema.of(Schema.Type.LONG)),
+      Schema.Field.of("negative", Schema.of(Schema.Type.LONG)),
       Schema.Field.of("unknown", Schema.of(Schema.Type.LONG))
     );
   }
