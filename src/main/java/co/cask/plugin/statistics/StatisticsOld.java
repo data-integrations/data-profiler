@@ -15,8 +15,8 @@ public class StatisticsOld {
     Schema.Field.of("zero_count", Schema.nullableOf(Schema.of(Schema.Type.LONG))),
     Schema.Field.of("pos_count", Schema.nullableOf(Schema.of(Schema.Type.LONG))),
     Schema.Field.of("neg_count", Schema.nullableOf(Schema.of(Schema.Type.LONG))),
-    Schema.Field.of("min", Schema.nullableOf(Schema.of(Schema.Type.DOUBLE))),
-    Schema.Field.of("max", Schema.nullableOf(Schema.of(Schema.Type.DOUBLE))),
+    Schema.Field.of("minimum", Schema.nullableOf(Schema.of(Schema.Type.DOUBLE))),
+    Schema.Field.of("maximum", Schema.nullableOf(Schema.of(Schema.Type.DOUBLE))),
     Schema.Field.of("mean", Schema.nullableOf(Schema.of(Schema.Type.DOUBLE))),
     Schema.Field.of("stddev", Schema.nullableOf(Schema.of(Schema.Type.DOUBLE))),
     Schema.Field.of("empty_count", Schema.nullableOf(Schema.of(Schema.Type.LONG))),
@@ -182,8 +182,8 @@ public class StatisticsOld {
     }
     long nonNullCount = count - nullCount;
     if (hasNumeric) {
-      output.set("min", min);
-      output.set("max", max);
+      output.set("minimum", min);
+      output.set("maximum", max);
       output.set("mean", sum / nonNullCount);
       output.set("zero_count", zeroCount);
       output.set("pos_count", posCount);

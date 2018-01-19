@@ -91,8 +91,8 @@ public final class Quantitative extends Profile {
 
   @Override
   public void results(StructuredRecord.Builder builder) {
-    builder.set("max", V(statistics.getMax()));
-    builder.set("min", V(statistics.getMin()));
+    builder.set("maximum", V(statistics.getMax()));
+    builder.set("minimum", V(statistics.getMin()));
     builder.set("mean", V(statistics.getMean()));
     builder.set("stdev", V(statistics.getStandardDeviation()));
     builder.set("median", V(statistics.getPercentile(50)));
@@ -104,6 +104,6 @@ public final class Quantitative extends Profile {
     builder.set("kurtosis", V(statistics.getKurtosis()));
     builder.set("population_variance", V(statistics.getPopulationVariance()));
     builder.set("quadratic_mean", V(statistics.getQuadraticMean()));
-    builder.set("sum", V(statistics.getSum()));
+    builder.set("total", V(statistics.getSum()));
   }
 }

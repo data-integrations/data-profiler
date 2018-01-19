@@ -20,14 +20,14 @@
 
   <groupId>co.cask.plugin</groupId>
   <artifactId>data-profiler</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <packaging>jar</packaging>
   <name>Data Profiler for generating statistics on the fields being processed of a feed.</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spark.version>1.6.1</spark.version>
-    <cdap.version>4.3.2</cdap.version>
+    <cdap.version>4.3.3</cdap.version>
     <hadoop.version>2.3.0</hadoop.version>
     <apache.commons.math3.version>3.6.1</apache.commons.math3.version>
     <apache.commons.collections>3.2.2</apache.commons.collections>
@@ -65,16 +65,25 @@
       <groupId>co.cask.cdap</groupId>
       <artifactId>cdap-formats</artifactId>
       <version>${cdap.version}</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.google.code.gson</groupId>
+          <artifactId>gson</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>co.cask.cdap</groupId>
       <artifactId>cdap-etl-api</artifactId>
       <version>${cdap.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>co.cask.cdap</groupId>
       <artifactId>cdap-etl-api-spark</artifactId>
       <version>${cdap.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>co.cask.cdap</groupId>
@@ -312,7 +321,7 @@
       <plugin>
         <groupId>co.cask</groupId>
         <artifactId>cdap-maven-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0</version>
         <configuration>
           <cdapArtifacts>
             <parent>system:cdap-data-pipeline[4.0.0,5.0.0)</parent>
