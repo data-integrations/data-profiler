@@ -74,8 +74,8 @@ public final class Logical extends Profile {
 
   @Override
   public void results(StructuredRecord.Builder builder) {
-    builder.set("true", countTrue);
-    builder.set("false", countFalse);
+    builder.set("positive", countTrue);
+    builder.set("negative", countFalse);
     builder.set("unknown", countUnknown);
   }
 }

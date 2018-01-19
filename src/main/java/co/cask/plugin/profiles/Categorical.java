@@ -62,8 +62,8 @@ public final class Categorical extends Profile {
   @Override
   public List<Schema.Field> fields() {
     return Arrays.asList(
-      Schema.Field.of("minimum", Schema.of(Schema.Type.LONG)),
-      Schema.Field.of("maximum", Schema.of(Schema.Type.LONG)),
+      Schema.Field.of("minimum", Schema.of(Schema.Type.DOUBLE)),
+      Schema.Field.of("maximum", Schema.of(Schema.Type.DOUBLE)),
       Schema.Field.of("empty", Schema.of(Schema.Type.LONG)),
       Schema.Field.of("mean", Schema.of(Schema.Type.DOUBLE)),
       Schema.Field.of("stdev", Schema.of(Schema.Type.DOUBLE)),
@@ -122,8 +122,8 @@ public final class Categorical extends Profile {
     builder.set("nulls", nulls);
     builder.set("non_nulls", count - nulls);
     builder.set("empty", empty);
-    builder.set("max", V(statistics.getMax()));
-    builder.set("min", V(statistics.getMin()));
+    builder.set("maximum", V(statistics.getMax()));
+    builder.set("minimum", V(statistics.getMin()));
     builder.set("mean", V(statistics.getMean()));
     builder.set("stdev", V(statistics.getStandardDeviation()));
     builder.set("median", V(statistics.getPercentile(50)));
