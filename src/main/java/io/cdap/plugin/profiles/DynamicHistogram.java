@@ -14,7 +14,7 @@
  * the License.
  */
 
-package co.cask.plugin.profiles;
+package io.cdap.plugin.profiles;
 
 /**
  * Class description here.

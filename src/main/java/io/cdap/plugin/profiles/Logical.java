@@ -14,11 +14,11 @@
  * the License.
  */
 
-package co.cask.plugin.profiles;
+package io.cdap.plugin.profiles;
 
-import co.cask.cdap.api.data.format.StructuredRecord;
-import co.cask.cdap.api.data.schema.Schema;
-import co.cask.plugin.Profile;
+import io.cdap.cdap.api.data.format.StructuredRecord;
+import io.cdap.cdap.api.data.schema.Schema;
+import io.cdap.plugin.Profile;
 
 import java.util.Arrays;
 import java.util.List;
