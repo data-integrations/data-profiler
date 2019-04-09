@@ -2,11 +2,11 @@
   "specVersion": "1.0",
   "label": "Data Profiler",
   "description": "Generate statistics for each column or field within the data feed. Supports logical, informational, quantitative, uniques statistics generation",
-  "author": "Cask",
-  "org": "Cask Data, Inc.",
+  "author": "CDAP",
+  "org": "CDAP",
   "created": 1510006834,
-  "categories": [ 
-    "hydrator-plugin" 
+  "categories": [
+    "hydrator-plugin"
   ],
   "cdapVersion": "[4.3.0-SNAPSHOT,5.0.0-SNAPSHOT)",
   "actions": [
