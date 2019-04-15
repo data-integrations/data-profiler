@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 Cask Data, Inc.
+ * Copyright © 2018-2019 Cask Data, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -14,30 +14,26 @@
  * the License.
  */
 
-package co.cask.plugin;
+package io.cdap.plugin;
 
-import co.cask.cdap.api.annotation.Description;
-import co.cask.cdap.api.annotation.Name;
-import co.cask.cdap.api.annotation.Plugin;
-import co.cask.cdap.api.data.format.StructuredRecord;
-import co.cask.cdap.api.data.schema.Schema;
-import co.cask.cdap.api.plugin.PluginConfig;
-import co.cask.cdap.etl.api.Emitter;
-import co.cask.cdap.etl.api.PipelineConfigurer;
-import co.cask.cdap.etl.api.batch.BatchAggregator;
-import co.cask.cdap.etl.api.batch.BatchAggregatorContext;
-import co.cask.cdap.etl.api.batch.BatchRuntimeContext;
-import co.cask.plugin.profiles.Categorical;
-import co.cask.plugin.profiles.Histogram;
-import co.cask.plugin.profiles.Logical;
-import co.cask.plugin.profiles.Quantitative;
-import co.cask.plugin.profiles.Uniques;
+import io.cdap.cdap.api.annotation.Description;
+import io.cdap.cdap.api.annotation.Name;
+import io.cdap.cdap.api.annotation.Plugin;
+import io.cdap.cdap.api.data.format.StructuredRecord;
+import io.cdap.cdap.api.data.schema.Schema;
+import io.cdap.cdap.api.plugin.PluginConfig;
+import io.cdap.cdap.etl.api.Emitter;
+import io.cdap.cdap.etl.api.PipelineConfigurer;
+import io.cdap.cdap.etl.api.batch.BatchAggregator;
+import io.cdap.cdap.etl.api.batch.BatchAggregatorContext;
+import io.cdap.cdap.etl.api.batch.BatchRuntimeContext;
+import io.cdap.plugin.profiles.*;
 
+import javax.annotation.Nullable;
+import javax.ws.rs.Path;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import javax.annotation.Nullable;
-import javax.ws.rs.Path;
 
 /**
  * Aggregator that calculates statistics for each record field.

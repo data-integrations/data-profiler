@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 Cask Data, Inc.
+ * Copyright © 2018-2019 Cask Data, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -14,16 +14,16 @@
  * the License.
  */
 
-package co.cask.plugin;
+package io.cdap.plugin;
 
-import co.cask.cdap.api.data.format.StructuredRecord;
-import co.cask.cdap.api.data.schema.Schema;
-import co.cask.plugin.profiles.Categorical;
-import co.cask.plugin.profiles.DynamicHistogram;
-import co.cask.plugin.profiles.Histogram;
-import co.cask.plugin.profiles.Logical;
-import co.cask.plugin.profiles.Quantitative;
-import co.cask.plugin.profiles.Uniques;
+import io.cdap.cdap.api.data.format.StructuredRecord;
+import io.cdap.cdap.api.data.schema.Schema;
+import io.cdap.plugin.profiles.Categorical;
+import io.cdap.plugin.profiles.DynamicHistogram;
+import io.cdap.plugin.profiles.Histogram;
+import io.cdap.plugin.profiles.Logical;
+import io.cdap.plugin.profiles.Quantitative;
+import io.cdap.plugin.profiles.Uniques;
 import com.clearspring.analytics.stream.cardinality.HyperLogLogPlus;
 import org.junit.Assert;
 import org.junit.Test;
