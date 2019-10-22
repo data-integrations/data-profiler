@@ -16,6 +16,7 @@
 
 package io.cdap.plugin;
 
+import com.google.common.base.Strings;
 import io.cdap.cdap.api.annotation.Description;
 import io.cdap.cdap.api.annotation.Name;
 import io.cdap.cdap.api.annotation.Plugin;
@@ -23,7 +24,9 @@ import io.cdap.cdap.api.data.format.StructuredRecord;
 import io.cdap.cdap.api.data.schema.Schema;
 import io.cdap.cdap.api.plugin.PluginConfig;
 import io.cdap.cdap.etl.api.Emitter;
+import io.cdap.cdap.etl.api.FailureCollector;
 import io.cdap.cdap.etl.api.PipelineConfigurer;
+import io.cdap.cdap.etl.api.StageConfigurer;
 import io.cdap.cdap.etl.api.batch.BatchAggregator;
 import io.cdap.cdap.etl.api.batch.BatchAggregatorContext;
 import io.cdap.cdap.etl.api.batch.BatchRuntimeContext;
@@ -63,11 +66,10 @@ public class DataProfiler extends BatchAggregator<String, StructuredRecord, Stru
 
   @Override
   public void configurePipeline(PipelineConfigurer configurer) {
-    conf.validate();
-    executor = new DefaultProfiler(profiles,
-                                   configurer.getStageConfigurer().getInputSchema()
-    );
-    configurer.getStageConfigurer().setOutputSchema(executor.getOutputSchema());
+    StageConfigurer stageConfigurer = configurer.getStageConfigurer();
+    conf.validate(stageConfigurer.getFailureCollector());
+    executor = new DefaultProfiler(profiles, stageConfigurer.getInputSchema());
+    stageConfigurer.setOutputSchema(executor.getOutputSchema());
   }
 
   @Override
@@ -132,15 +134,17 @@ public class DataProfiler extends BatchAggregator<String, StructuredRecord, Stru
 
 
   public static class Conf extends PluginConfig {
+    private static final String NUM_PARTITIONS = "partitions";
     @Nullable
     @Description("The number of partitions to use when shuffling the data. " +
       "Defaults to the number of fields in the input fields.")
-    @Name("partitions")
+    @Name(NUM_PARTITIONS)
     private Integer numPartitions;
 
-    private void validate() {
+    private void validate(FailureCollector collector) {
       if (numPartitions != null && numPartitions < 1) {
-        throw new IllegalArgumentException("Invalid number of partitions: " + numPartitions + ". Must be at least 1.");
+        collector.addFailure("Invalid number of partitions: '" + numPartitions + "'. Must be at least 1.", null)
+          .withConfigProperty(NUM_PARTITIONS);
       }
     }
   }
