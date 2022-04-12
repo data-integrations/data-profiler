@@ -28,7 +28,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spark.version>1.6.1</spark.version>
     <cdap.version>6.1.0-SNAPSHOT</cdap.version>
-    <hadoop.version>2.3.0</hadoop.version>
+    <hadoop.version>3.2.3</hadoop.version>
     <apache.commons.math3.version>3.6.1</apache.commons.math3.version>
     <apache.commons.collections>3.2.2</apache.commons.collections>
   </properties>
