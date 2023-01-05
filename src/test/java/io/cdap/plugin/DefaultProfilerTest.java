@@ -67,6 +67,20 @@ public class DefaultProfilerTest {
   }
 
   @Test
+  public void testNullCount() {
+    List<Profile> profiles = new ArrayList<>();
+    profiles.add(new Categorical());
+    Profiler profiler = new DefaultProfiler(profiles, schema);
+    StructuredRecord result = profiler.result("s");
+    profiler.update("s", null);
+    profiler.update("s", null);
+    profiler.update("s", "1");
+    profiler.update("s", null);
+    Assert.assertEquals(3, profiles.get(0).getNulls());
+    Assert.assertEquals(1, profiles.get(0).getCount() - profiles.get(0).getNulls());
+  }
+
+  @Test
   public void testHyperLogLog() throws Exception {
     HyperLogLogPlus hll = new HyperLogLogPlus(32, 32);
     hll.offer("a");
