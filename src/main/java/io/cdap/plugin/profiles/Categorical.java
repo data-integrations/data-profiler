@@ -131,5 +131,4 @@ public final class Categorical extends Profile {
     builder.set("population_variance", V(statistics.getPopulationVariance()));
     builder.set("quadratic_mean", V(statistics.getQuadraticMean()));
   }
-
 }

@@ -56,5 +56,4 @@ public abstract class Profile {
   }
 
   public abstract void results(StructuredRecord.Builder builder);
-
 }

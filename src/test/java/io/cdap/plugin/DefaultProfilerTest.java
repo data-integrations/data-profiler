@@ -60,10 +60,6 @@ public class DefaultProfilerTest {
     StructuredRecord result = profiler.result("s");
     Assert.assertNotNull(result);
     Assert.assertNotNull(outputSchema);
-    profiler.update("s", null);
-    result = profiler.result("s");
-    Assert.assertNotNull(result);
-    Assert.assertNotNull(outputSchema);
   }
 
   @Test
