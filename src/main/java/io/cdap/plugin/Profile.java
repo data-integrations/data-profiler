@@ -57,11 +57,4 @@ public abstract class Profile {
 
   public abstract void results(StructuredRecord.Builder builder);
 
-  public long getNulls() {
-    return 0;
-  }
-
-  public long getCount() {
-    return 0;
-  }
 }

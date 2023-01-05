@@ -71,13 +71,17 @@ public class DefaultProfilerTest {
     List<Profile> profiles = new ArrayList<>();
     profiles.add(new Categorical());
     Profiler profiler = new DefaultProfiler(profiles, schema);
-    StructuredRecord result = profiler.result("s");
     profiler.update("s", null);
     profiler.update("s", null);
     profiler.update("s", "1");
     profiler.update("s", null);
-    Assert.assertEquals(3, profiles.get(0).getNulls());
-    Assert.assertEquals(1, profiles.get(0).getCount() - profiles.get(0).getNulls());
+    StructuredRecord record = profiler.result("s");
+    StructuredRecord subrecord = record.get("categorical");
+    Assert.assertNotNull(subrecord);
+    long nulls = subrecord.get("nulls");
+    long non_nulls = subrecord.get("non_nulls");
+    Assert.assertEquals(3, nulls);
+    Assert.assertEquals(1, non_nulls);
   }
 
   @Test

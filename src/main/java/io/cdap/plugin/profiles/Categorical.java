@@ -132,17 +132,4 @@ public final class Categorical extends Profile {
     builder.set("quadratic_mean", V(statistics.getQuadraticMean()));
   }
 
-  /**
-    * Method for retrieving private data variable nulls
-    */
-  public long getNulls() {
-    return nulls;
-  }
-
-  /**
-   * Method for retrieving private data variable nulls
-   */
-  public long getCount() {
-    return count;
-  }
 }
