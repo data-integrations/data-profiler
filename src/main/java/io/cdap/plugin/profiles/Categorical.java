@@ -97,16 +97,14 @@ public final class Categorical extends Profile {
   @Override
   public void update(Object value) {
     count = count + 1;
-    if (value instanceof String) {
-      if (value == null) {
-        nulls = nulls + 1;
+    if (value == null) {
+      nulls = nulls + 1;
+    } else if (value instanceof String) {
+      String val = (String) value;
+      if (val.isEmpty()) {
+        empty = empty + 1;
       } else {
-        String val = (String) value;
-        if (val.isEmpty()) {
-          empty = empty + 1;
-        } else {
-          statistics.addValue(val.length());
-        }
+        statistics.addValue(val.length());
       }
     }
   }
